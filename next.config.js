@@ -1,5 +1,5 @@
 const path = require('path')
- 
+
 module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
@@ -17,5 +17,13 @@ module.exports = {
         pathname: '**',
       },
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Exclude react-fast-marquee from server bundle to prevent SSR issues
+      config.externals = config.externals || [];
+      config.externals.push('react-fast-marquee');
+    }
+    return config;
   },
 }
